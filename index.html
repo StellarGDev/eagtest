@@ -50,12 +50,19 @@ select{background:#17191c;color:#fff;border:1px solid #626970;padding:9px;min-wi
 #gameFrameOverlay:fullscreen{width:100vw;height:100vh}
 #gameFrameOverlay:fullscreen #gameFrameToolbar{min-height:42px}
 @media(max-width:600px){#gameFrameToolbar{gap:6px;padding:0 7px}#gameFrameToolbar button,#gameFrameToolbar a{padding:7px 8px;font-size:12px}}
+
+/* Trailer page */
+.trailer-panel{background:#151b22;border:1px solid #303b46;border-radius:14px;padding:18px;margin-top:18px}
+.trailer-frame-wrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#000}
+.trailer-frame-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.trailer-caption{color:#aeb8c2;margin:12px 2px 0;font-size:14px}
 </style></head><body>
 <div class="shell">
 <aside class="sidebar"><div class="mark" title="Minecraft">▦</div>
 <button class="nav active" data-page="play">▶<span>PLAY</span></button>
 <button class="nav" data-page="installations">▤<span>VERSIONS</span></button>
-<button class="nav" data-page="news">▣<span>NEWS</span></button></aside>
+<button class="nav" data-page="news">▣<span>NEWS</span></button>
+<button class="nav" data-page="trailer">▶<span>TRAILER</span></button></aside>
 <main class="main"><header class="top"><div class="topbrand">EAGLERCRAFT LAUNCHER</div><div class="profile"><div class="avatar">E</div><span>Eaglercraft</span></div></header><div class="content" id="content"></div></main>
 </div><div class="toast" id="toast"></div>
 
@@ -118,7 +125,7 @@ document.addEventListener('keydown',e=>{
 });
 function go(page){
  document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
- ({play,installations,news}[page])();
+ ({play,installations,news,trailer}[page])();
 }
 function bindSelector(){
  const sel=document.getElementById('versionSelect');
@@ -150,6 +157,17 @@ function installations(){
  ${versions.map((v,i)=>`<div class="row"><div><b>${v.name}</b><p>${v.detail}</p></div><button class="btn ${i===selected?'green':''}" data-select="${i}">${i===selected?'Selected':'Select'}</button></div>`).join('')}
  </div><p class="note">Choose a version here, then return to Play and press PLAY to load it in the fullscreen game viewer.</p>`;
  root.querySelectorAll('[data-select]').forEach(b=>b.onclick=()=>{selected=Number(b.dataset.select);installations();toast('Selected '+versions[selected].name)});
+}
+function trailer(){
+ root.innerHTML=`<div class="pagehead"><h1 class="sectionTitle">Trailer</h1><span class="muted">WATCH</span></div>
+ <section class="trailer-panel">
+  <div class="trailer-frame-wrap">
+   <iframe src="https://www.youtube.com/watch?v=MmB9b5njVbA"
+    title="Eaglercraft trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+  <p class="trailer-caption">Watch the trailer right here in the launcher.</p>
+ </section>`;
 }
 function news(){
  const stories=[["New worlds to explore", "Set out across new landscapes, discover resources, and find the perfect place to build.", art["wilderness"]], ["Tiny Takeover", "Meet the tiny creatures and enjoy the playful side of the blocky world.", art["tiny_takeover"]], ["Baby axolotls", "Add a splash of color with these adorable aquatic creatures.", art["axolotl"]], ["Baby bees", "A cheerful wallpaper celebrating the little pollinators of the world.", art["bee"]], ["Chaos Cubed", "A colorful new world of blocky adventure awaits.", art["chaos_cubed"]], ["Build something incredible", "From a simple starter shelter to a huge castle, your next creation starts one block at a time.", art[4]], ["Choose your era", "Try different Eaglercraft versions, from classic 1.8.8 to newer 1.12.2 and 26.2 experiences.", art[2]], ["Make every world yours", "Gather materials, experiment with designs, and create your own adventures.", art[0]]];
